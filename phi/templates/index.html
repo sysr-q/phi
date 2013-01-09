@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}phi{% endblock %}
+{% block header %}
+<h1 class="phi-header">phi - <b>p</b>lace <b>h</b>older <b>i</b>mages</h1>
+{% endblock %}
+{% block content %}
+	<p>
+		Writing a new layout but don't have the images you need?<br />
+		Simple! Throw in a placeholder!
+	</p>
+	<h2>But how?</h2>
+	<div id="but-how">
+		{% set ex_url = url_for('image', width=350, height=150, _external=True) %}
+		Throw your dimensions into a URL and you're set!
+		<h3>For example</h3>
+		<a href="{{ ex_url }}" class="phi-header bold">{{ ex_url }}</a><br />
+		<h3>Including in HTML</h3>
+		<input type="text" class="phi-text-long" value="&lt;img src=&quot;{{ ex_url }}&quot; /&gt;" readonly="readonly" />
+		<br />
+	</div>
+	
+	<h2>Example placeholders</h2>
+	<div id="examples">
+		{% set background = "555555" %}
+		{% set text = "7c7c7c" %}
+		<img src="{{ url_for('image', width=450, height=150, mime="png", background=background, text=text) }}" class="example" />
+		<img src="{{ url_for('image', width=200, height=100, mime="png", background=background, text=text) }}" class="example mright" />
+		<img src="{{ url_for('image', width=240, height=100, mime="png", background=background, text=text) }}" class="example" />
+		<img src="{{ url_for('image', width=450, height=50, mime="png", background=background, text=text) }}" class="example" />
+	</div>
+
+	<h2>Extra information</h2>
+	<div class="dropdown master">
+		<h3>Image type</h3>
+		<div class="dropdown slave">
+			<p>
+				Do you want to use a placeholder image which is in JPEG, GIF or PNG format? Easy, we've got that covered.<br />
+				Simply append either <b>jpeg</b>/<b>jpg</b>, <b>gif</b> or <b>png</b> (default) to the url and you're set.
+			</p>
+			<h4>For example</h4>
+			{% set jpeg_url = url_for('image', width=350, height=150, mime="jpg", _external=True) %}
+			<p>
+				Do you want your image to be a jpeg instead of a png? Easy:<br />
+				<a href="{{ jpeg_url }}">{{ jpeg_url }}</a>
+			</p>
+		</div>
+	</div>
+	<div class="dropdown">
+		<h3>Colors</h3>
+		<div class="slave">
+			<p>
+				If you want to set either the background or foreground (text) colors, you can do so by appending them to the url.<br />
+				It is <b>always</b> in the order background <b>then</b> foreground.<br />
+				You can set the background color without setting the foreground, but not the other way.<br />
+				If you don't specify a font color, then no text is drawn onto the image.
+			</p>
+			<h4>For example</h4>
+			{% set black_url = url_for('image', width=350, height=150, mime="png", background="000000", _external=True) %}
+			{% set white_text_url = url_for('image', width=350, height=150, mime="png", background="000000", text="ffffff", _external=True) %}
+			<p>
+				If you want a black background, you'd do this:<br />
+				<a href="{{ black_url }}">{{ black_url }}</a><br />
+				If you want a black background, with white text saying the size, you'd do this:<br />
+				<a href="{{ white_text_url }}">{{ white_text_url }}</a>
+			</p>
+		</div>
+	</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('div.dropdown h3').each(function(i, e) {
+		$(this).parent().children('.slave').toggle(false);
+	});
+	$('div.dropdown h3').click(function() {
+		$(this).parent().children('.slave').slideToggle('slow');
+	});
+});
+</script>
+{% endblock %}
